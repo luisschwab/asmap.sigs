@@ -43,7 +43,7 @@ Synopsis:
 
 Example:
 
-    env SIGNER=achow101 \\
+    env SIGNER=satoshi \\
         ASMAP_TXT=/home/user/kartograf/out/1772726379/final_result.txt \\
         ENCODED_FILLED=/home/user/kartograf/out/1772726379/filled.dat \\
         ENCODED_UNFILLED=/home/user/kartograf/out/1772726379/unfilled.dat \\
@@ -51,12 +51,12 @@ Example:
       ./asmap-attest
 
     Outputs:
-      \$PWD/1772726379/achow101/SHA256SUMS          (attestation)
-      \$PWD/1772726379/achow101/SHA256SUMS.asc      (signature)
+      \$PWD/1772726379/satoshi/SHA256SUMS          (attestation)
+      \$PWD/1772726379/satoshi/SHA256SUMS.asc      (signature)
 
 Example w/o signing, just creating SHA256SUMS:
 
-    env SIGNER=achow101 \\
+    env SIGNER=satoshi \\
         ASMAP_TXT=/home/user/kartograf/out/1772726379/final_result.txt \\
         ENCODED_FILLED=/home/user/kartograf/out/1772726379/filled.dat \\
         ENCODED_UNFILLED=/home/user/kartograf/out/1772726379/unfilled.dat \\

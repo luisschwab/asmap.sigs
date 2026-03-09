@@ -9,7 +9,7 @@ Generate ASmap -> encode ASmap -> attest to file hashes -> PR to this repo
 (Kartograf)       (asmap-tool)     (gpg) 
 ```
 
-The attestation file should contain three lines, the first for the final result, the second for the unfilled ASmap and the third for the filled ASmap, for example:
+The attestation file should contain three lines, the first for the final result, the second for the filled ASmap and the third for the unfilled ASmap, for example:
 ```
 cc199d5de04add6b5c2d95a72610c8a1a7b1f41fe01bd2b4c6db17795856aa31  final_result.txt
 1146cbba8719cf3988d377df579667f68f97d2376d67755beb1e38194e196cfc  final_result_filled.dat
@@ -25,7 +25,14 @@ To encode an ASmap from the `bitcoin` source tree, with a `final_result.txt` ASm
   - `python contrib/asmap/asmap-tool.py encode --fill final_result.txt output_asmap_filled.dat`
 
 To attest to these outputs, run the `asmap-attest` script from this repo:
-`env SIGNER=<gpg-key-name> ASMAP_TXT=<path/to/final_result.txt> ENCODED_FILLED=<path/to/filled.dat> ENCODED_UNFILLED=<path/to/unfilled.dat> EPOCH=<unix_timestamp> ./asmap-attest`
+```bash
+env SIGNER=<gpg-key-name>\
+  ASMAP_TXT=<path/to/final_result.txt>\
+  ENCODED_FILLED=<path/to/filled.dat>\
+  ENCODED_UNFILLED=<path/to/unfilled.dat>\
+  EPOCH=<unix_timestamp>\
+  ./asmap-attest
+```
 
 This will add a `SHA256SUMS` file and a `SHA256SUMS.asc` file under the `<EPOCH>/<SIGNER>` folder.
 
