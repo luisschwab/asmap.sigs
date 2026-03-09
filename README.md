@@ -4,24 +4,42 @@ The [asmap-data](https://github.com/bitcoin-core/asmap-data) repository contains
 
 ### Process
 
-Creating an ASmap for use with Bitcoin Core starts with a "collaborative run" ([example](https://github.com/bitcoin-core/asmap-data/issues/42)), where each participant start [Kartograf](https://github.com/asmap/kartograf) at the same Unix timestamp.
+```
+Generate ASmap -> encode ASmap -> attest to file hashes -> PR to this repo
+(Kartograf)       (asmap-tool)     (gpg) 
+```
 
-If a majority of participants arrive at the same output ASmap, that output is a candidate for use with Bitcoin Core. An ASmap must be encoded for use with Core, using the [asmap-tool](https://github.com/bitcoin/bitcoin/tree/master/contrib/asmap) utility. 
-
-Upon submission to the [asmap-data](https://github.com/bitcoin-core/asmap-data) repository, participants should recreate the hashes for these ASmaps, and sign them with their PGP key.
+The attestation file should contain three lines, the first for the final result, the second for the filled ASmap and the third for the unfilled ASmap, for example:
+```
+cc199d5de04add6b5c2d95a72610c8a1a7b1f41fe01bd2b4c6db17795856aa31  final_result.txt
+1146cbba8719cf3988d377df579667f68f97d2376d67755beb1e38194e196cfc  final_result_filled.dat
+1c20ea2dee306af0a3ab4eaefaabe1e4c23a1c4256e60639e7ba48b2bbe56f24  final_result_unfilled.dat
+```
 
 ### Commands
 
-From a `bitcoin` directory with the bitcoin-core source tree, with a `final_result.txt` ASmap output
+To encode an ASmap from the `bitcoin` source tree, with a `final_result.txt` ASmap:
 - To encode an _unfilled_ ASmap:
   - `python contrib/asmap/asmap-tool.py encode final_result.txt output_asmap_unfilled.dat`
 - To encode a _filled_ ASmap:
   - `python contrib/asmap/asmap-tool.py encode --fill final_result.txt output_asmap_filled.dat`
 
+To attest to these outputs, run the `asmap-attest` script from this repo:
+```bash
+env SIGNER=<gpg-key-name>\
+  ASMAP_TXT=<path/to/final_result.txt>\
+  ENCODED_FILLED=<path/to/filled.dat>\
+  ENCODED_UNFILLED=<path/to/unfilled.dat>\
+  EPOCH=<unix_timestamp>\
+  ./asmap-attest
+```
+
+This will add a `SHA256SUMS` file and a `SHA256SUMS.asc` file under the `<EPOCH>/<SIGNER>` folder.
+
 ### Directory Structure
 
 - `<run epoch>/<signer>`: each ASmap from a collaborative run is run at a specific epoch (Unix timestamp), which serves to identify a given run.
-  - `output.SHA256SUMS`: hashes of the `filled` and `unfilled` encoded ASmap 
-  - `output.SHA256SUMS.asc`: detached PGP signature over the `output.SHA256SUMS` file
+  - `SHA256SUMS`: hashes of the `final_result.txt`, filled and unfilled encoded ASmap
+  - `SHA256SUMS.asc`: detached PGP signature over the `SHA256SUMS` file
 - `builder-keys/<signer>.gpg`: signer keys
 
