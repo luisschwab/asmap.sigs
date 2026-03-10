@@ -4,6 +4,12 @@ The [asmap-data](https://github.com/bitcoin-core/asmap-data) repository contains
 
 ### Usage
 
+To attest to an ASmap, you must have:
+- the result file `final_result.txt` containing the ASmap in text format
+- encoded the file via `asmap-tool.py` as both filled and unfilled versions
+- the Unix timestamp associated with the ASmap run
+- a PGP key added to the `builder-keys` dir in this repo
+
 Attesting to an ASmap output:
 ```bash
 env SIGNER=<gpg-key-name>\
@@ -24,6 +30,7 @@ This will print out verifications of all attestations in the repo.
 
 ### Process
 
+The full ASmap generation process follows:
 ```
 Generate ASmap -> encode ASmap -> attest to file hashes -> PR to this repo
 (Kartograf)       (asmap-tool)     (gpg) 
@@ -43,7 +50,6 @@ To encode an ASmap from the `bitcoin` source tree, with a `final_result.txt` ASm
   - `python contrib/asmap/asmap-tool.py encode final_result.txt output_asmap_unfilled.dat`
 - To encode a _filled_ ASmap:
   - `python contrib/asmap/asmap-tool.py encode --fill final_result.txt output_asmap_filled.dat`
-
 
 
 ### Directory Structure
