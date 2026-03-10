@@ -2,6 +2,26 @@ Repository containing ASmap file attestations.
 
 The [asmap-data](https://github.com/bitcoin-core/asmap-data) repository contains ASmaps for use with Bitcoin Core. This repository contains attestations on those files.
 
+### Usage
+
+Attesting to an ASmap output:
+```bash
+env SIGNER=<gpg-key-name>\
+  ASMAP_TXT=<path/to/final_result.txt>\
+  ENCODED_FILLED=<path/to/filled.dat>\
+  ENCODED_UNFILLED=<path/to/unfilled.dat>\
+  EPOCH=<unix_timestamp>\
+  ./asmap-attest
+```
+
+This will add a `SHA256SUMS` file and a `SHA256SUMS.asc` file under the `<EPOCH>/<SIGNER>` folder.
+
+Verifying attestations in this repo:
+```bash
+./asmap-verify
+```
+This will print out verifications of all attestations in the repo.
+
 ### Process
 
 ```
@@ -24,17 +44,7 @@ To encode an ASmap from the `bitcoin` source tree, with a `final_result.txt` ASm
 - To encode a _filled_ ASmap:
   - `python contrib/asmap/asmap-tool.py encode --fill final_result.txt output_asmap_filled.dat`
 
-To attest to these outputs, run the `asmap-attest` script from this repo:
-```bash
-env SIGNER=<gpg-key-name>\
-  ASMAP_TXT=<path/to/final_result.txt>\
-  ENCODED_FILLED=<path/to/filled.dat>\
-  ENCODED_UNFILLED=<path/to/unfilled.dat>\
-  EPOCH=<unix_timestamp>\
-  ./asmap-attest
-```
 
-This will add a `SHA256SUMS` file and a `SHA256SUMS.asc` file under the `<EPOCH>/<SIGNER>` folder.
 
 ### Directory Structure
 
