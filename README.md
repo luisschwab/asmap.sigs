@@ -2,6 +2,23 @@ Repository containing ASmap file attestations.
 
 The [asmap-data](https://github.com/bitcoin-core/asmap-data) repository contains ASmaps for use with Bitcoin Core. This repository contains attestations on those files.
 
+### Usage
+
+Attesting to an ASmap output:
+```bash
+env SIGNER=<gpg-key-name>\
+  ASMAP_TXT=<path/to/final_result.txt>\
+  ENCODED_FILLED=<path/to/filled.dat>\
+  ENCODED_UNFILLED=<path/to/unfilled.dat>\
+  EPOCH=<unix_timestamp>\
+  ./asmap-attest
+```
+
+Verifying attestations in this repo:
+```bash
+./asmap-verify
+```
+
 ### Process
 
 ```
